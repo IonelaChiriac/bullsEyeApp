@@ -23,6 +23,7 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   bool _alertIsVisible = false;
+  bool _whoIsThereVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,13 @@ class _GamePageState extends State<GamePage> {
                 this._alertIsVisible = true;
                 _showAlert(context);
                 print("Button pressed! $_alertIsVisible");
+              },
+            ),
+            FlatButton(
+              child: Text('Knock knock!', style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                this._whoIsThereVisible = true;
+                _showAlertSecondButton(context);
               },
             ),
           ],
@@ -73,4 +81,36 @@ class _GamePageState extends State<GamePage> {
       },
     );
   }
+
+  void _showAlertSecondButton(BuildContext context) {
+    Widget okButton = FlatButton(
+      child: Text("You tell me!!"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        this._whoIsThereVisible = false;
+      },
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Who's there? "),
+          content: Text("I am. I am who? "),
+          actions: [
+            okButton,
+          ],
+          elevation: 5,
+        );
+      },
+    );
+  }
 }
+//TODO: add another button that says knock knock
+//TODO: if you tap the button you will get a message who's there in his title
+//TODO: a knock knock joke will apear in a message in dismiss button
+
+//TODO: add a flat button below the hit me button that has the text knock knock
+//TODO: write a code to display a pop up alert that is saying who's there
+//TODO: copy amd paste the alert visible property and rename it to who's there is Visible
+//TODO: modify the knock knock action to say who's there is visible to true
+//TODO: call the alert method on the knock knock button to present an alert who's there at the state variable is true
