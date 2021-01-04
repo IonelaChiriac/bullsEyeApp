@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:bulls_eye/prompt.dart';
+import 'package:bulls_eye/control.dart';
 
 void main() => runApp(BullsEyeApp());
 
 class BullsEyeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     return MaterialApp(
       title: 'BullsEye',
       theme: ThemeData(primarySwatch: Colors.blue),
@@ -23,7 +30,6 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   bool _alertIsVisible = false;
-  bool _whoIsThereVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,24 +38,14 @@ class _GamePageState extends State<GamePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Welcome to my first app!',
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
-            ),
+            Prompt(targetValue: 100),
+            Control(),
             FlatButton(
               child: Text('Hit Me!', style: TextStyle(color: Colors.blue)),
               onPressed: () {
                 this._alertIsVisible = true;
                 _showAlert(context);
                 print("Button pressed! $_alertIsVisible");
-              },
-            ),
-            FlatButton(
-              child: Text('Knock knock!', style: TextStyle(color: Colors.blue)),
-              onPressed: () {
-                this._whoIsThereVisible = true;
-                _showAlertSecondButton(context);
               },
             ),
           ],
@@ -73,29 +69,6 @@ class _GamePageState extends State<GamePage> {
         return AlertDialog(
           title: Text("Hello there!"),
           content: Text("This is my first pop-up."),
-          actions: [
-            okButton,
-          ],
-          elevation: 5,
-        );
-      },
-    );
-  }
-
-  void _showAlertSecondButton(BuildContext context) {
-    Widget okButton = FlatButton(
-      child: Text("You tell me!!"),
-      onPressed: () {
-        Navigator.of(context).pop();
-        this._whoIsThereVisible = false;
-      },
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Who's there? "),
-          content: Text("I am. I am who? "),
           actions: [
             okButton,
           ],
