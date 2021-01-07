@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bulls_eye/prompt.dart';
 import 'package:bulls_eye/control.dart';
+import 'score.dart';
+import 'gamemodel.dart';
 
 void main() => runApp(BullsEyeApp());
 
@@ -30,6 +32,13 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   bool _alertIsVisible = false;
+  GameModel _model;
+
+  @override
+  void initState() {
+    super.initState();
+    _model = GameModel(50); //GameModel constructor
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +47,10 @@ class _GamePageState extends State<GamePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Prompt(targetValue: 100),
-            Control(),
+            Prompt(targetValue: _model.target),
+            Control(
+              model: _model,
+            ),
             FlatButton(
               child: Text('Hit Me!', style: TextStyle(color: Colors.blue)),
               onPressed: () {
@@ -47,6 +58,10 @@ class _GamePageState extends State<GamePage> {
                 _showAlert(context);
                 print("Button pressed! $_alertIsVisible");
               },
+            ),
+            Score(
+              totalScore: _model.totalScore,
+              round: _model.round,
             ),
           ],
         ),
@@ -68,7 +83,7 @@ class _GamePageState extends State<GamePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Hello there!"),
-          content: Text("This is my first pop-up."),
+          content: Text("The slider's value is ${_model.current}"),
           actions: [
             okButton,
           ],
